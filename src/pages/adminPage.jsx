@@ -5,6 +5,7 @@ import { HiOutlineDocumentReport } from "react-icons/hi";
 import { Link, Route, Routes } from "react-router-dom";
 import AdminProductsPage from "./admin/products";
 import AddProductForm from "./admin/addProductForm";
+import EditProductForm from "./admin/editProdut";
 
 export default function AdminPage(){
     return(
@@ -15,12 +16,13 @@ export default function AdminPage(){
                 <Link to="/admin/customers" className="flex p-2 hover:bg-gray-300 items-center"><FaUsers className="mr-2" />Customers</Link>
                 {/* <Link to="/admin/reports" className="flex p-2 hover:bg-gray-300 items-center"><HiOutlineDocumentReport className="mr-2" />Reports</Link> */}
             </div>
-            <div className="h-full bg-white w-[calc(100vh-300px)]">
+            <div className="w-full h-full bg-white ">
                 <Routes path="/*">
                     <Route path="/Products" element={<AdminProductsPage />} />
                     <Route path="/orders" element={<h1>Orders</h1>} />
                     <Route path="/customers" element={<h1>Customers</h1>} />
                     <Route path="/add-products" element={<AddProductForm />} />
+                    <Route path="/edit-product" element={<EditProductForm />} />
                 </Routes>
             </div>
         </div>

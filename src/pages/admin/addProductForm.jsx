@@ -27,6 +27,7 @@ async function handleSubmit() {
     console.log(results);
 
     const altNameInArray= altName.split(",");
+    console.log(altNameInArray);
     const product = {
       productId: productId,
       name: productName,
@@ -44,7 +45,7 @@ async function handleSubmit() {
       }
     })
     toast.success("Product added successfully!");
-    navigate("/admin/products");
+    // navigate("/admin/products");
   }catch(error){
     toast.error("Product adding failed!");
     console.error("Product adding failed: ", error);
