@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/loader";
 import ImageSlider from "../../components/imageSlider";
 import getCart, { addToCart } from "../../../utils/cart";
@@ -16,14 +16,14 @@ export default function ProductOverview() {
   const [product, setProduct] = useState();
   const [status, setStatus] = useState("loading...");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (status == "loading...") {
       axios
         .get(import.meta.env.VITE_API_URL + "/product/" + productId)
         .then((response) => {
-          console.log("Product fetched successfully: ", response.data);
-          setProduct(response.data);
+         setProduct(response.data);
           setStatus("loaded");
         })
         .catch((error) => {
@@ -70,14 +70,36 @@ export default function ProductOverview() {
             </div>
             <p className="text-gray-800 mb-4">{product.description}</p>
             <div className="w-full flex justify-center items-center gap-4">
-              <button className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-white hover:text-pink-500 transition duration-300 border-1 cursor-pointer" onClick={()=>{
-                addToCart(product , 1);
-                toast.success("Product added to cart!");
-                console.log(getCart());
-              }}>
+              <button
+                className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-white hover:text-pink-500 transition duration-300 border-1 cursor-pointer"
+                onClick={() => {
+                  addToCart(product, 1);
+                  toast.success("Product added to cart!");
+                  console.log(getCart());
+                }}
+              >
                 Add to Cart
               </button>
-              <button className="bg-amber-500 text-white px-4 py-2 rounded hover:bg-white hover:text-amber-500 transition duration-300 border-1 cursor-pointer">
+              <button
+                className="bg-amber-500 text-white px-4 py-2 rounded hover:bg-white hover:text-amber-500 transition duration-300 border-1 cursor-pointer"
+                onClick={() => {
+                  navigate("/checkout", {
+                    state: {
+                      items: [
+                        {
+                          productId: product.productId,
+                          name: product.name,
+                          altnames: product.altnames,
+                          price: product.price,
+                          labeledPrice: product.labeledPrice,
+                          image: product.images[0],
+                          quantity: 1,
+                        },
+                      ],
+                    },
+                  });
+                }}
+              >
                 Buy Now
               </button>
             </div>
