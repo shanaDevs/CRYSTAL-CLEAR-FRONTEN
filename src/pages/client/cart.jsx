@@ -1,10 +1,12 @@
 import { PiTrash } from "react-icons/pi";
-import getCart, { addToCart, removeFromCart } from "../../../utils/cart";
+import getCart, { addToCart, getTotal, getTotalForLabeledPrice, removeFromCart } from "../../../utils/cart";
 import {useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
     const [cartLoaded, setCartLoaded] = useState(false);
     const [cart, setCart] = useState([]);
+    const navigate = useNavigate();
     useEffect(() => {
        if(cartLoaded==false){
         const cart = getCart();
@@ -67,6 +69,31 @@ export default function CartPage() {
             </div>
           );
         })}
+        <div className="w-full flex justify-between items-center">
+          <h2 className="text-2xl h-[40px] font-bold">Total:</h2>
+          <h2 className="text-2xl h-[40px] font-bold">RS.{getTotalForLabeledPrice().toFixed(2)}</h2>
+        </div>
+        <div className="w-full flex justify-between items-center">
+          <h2 className="text-2xl h-[40px] font-bold">Discount:</h2>
+          <h2 className="text-2xl h-[40px] font-bold border-b border-black">RS.{(getTotalForLabeledPrice()-getTotal()).toFixed(2)}</h2>
+        </div>
+        <div className="w-full flex justify-between items-center">
+          <h2 className="text-2xl h-[40px] font-bold">Net Total:</h2>
+          <h2 className="text-2xl h-[40px] font-bold border-b-4 border-double border-black">RS.{getTotal().toFixed(2)}</h2>
+        </div>
+        <div className="w-full flex justify-end mt-4">
+          <button className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-white hover:text-pink-500 transition duration-300 cursor-pointer"
+          onClick={() => {
+            navigate("/checkout",
+              { state: {
+                items: cart
+              } }
+            );
+          }}
+          >
+            Proceed to Checkout
+          </button>
+        </div>
       </div>
     </div>
   );
